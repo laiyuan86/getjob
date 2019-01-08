@@ -1,0 +1,37 @@
+.topmenu {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 40px;
+    background-color: gray;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;  /*overflow 属性规定当内容溢出元素框时发生的事情，visible 默认值 会溢出， hidden 溢出的会被修建掉
+    scroll 会有滚动条， auto如果内容被修剪则有滚动条，inherit 从父元素集成overflow属性的值*/
+    background-color: #333333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none; /*规定添加到文本的修饰，none:定义标准的文本。underline:定义文本下的一条线，overline:定义文本上的一条线
+    line-through:定义穿过文本下的一条线，blink:定义闪烁的文本，inherit: 继承父元素*/
+}
+
+li a:hover {
+    background-color: #111111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
