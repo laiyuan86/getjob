@@ -4,15 +4,107 @@
     <meta charset="UTF-8">
     <title>发版信息统计</title>
     <link rel="stylesheet" type="text/css" href="/static/jobs/css/mystyle.css">
+    <link rel="stylesheet" type="text/css" href="/static/jobs/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/jobs/css/jquery-ui.css">
+    <script type="text/javascript" src="/static/jobs/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/jobs/js/highcharts.js"></script>
+    <script type="text/javascript" src="/static/jobs/js/jquery-ui.js"></script>
+    <script type="text/javascript">
+        function check() {
+            if($("#btime").val()==""){
+                alert("请输入开始时间");
+                return false
+            }
+            if($("#etime").val()==""){
+                alert("请输入结束时间");
+                return false
+            }
+            return true;
+        }
+
+        $(function () {
+            $("#btime").datepicker({dateFormat: "yy-mm-dd"});
+        })
+        $(function () {
+            $("#etime").datepicker({dateFormat: "yy-mm-dd"});
+        })
+    </script>
 </head>
 <body>
 <div>
     <div>
         <ul>
-            <li><a class="active" href="">主页</a> </li>
+            <li><a class="active" href="/">主页</a> </li>
             <li><a href="/lianxi/">联系</a> </li>
             <li style="float: right"><a href="/about/">关于</a> </li>
+            <form style="float: right; padding-top: 15px" action="/update/">
+                <li><input name="update" type="submit" value="更新"></li>
+            </form>
+            <form  style="float: right; padding-top: 15px; padding-right: 20px" action="/search/" onsubmit="check()">
+                <li style="color: white; padding-right: 10px">开始时间：<input  name="btime" id="btime" type="date"></li>
+                <li style="color: white; padding-right: 10px">结束时间：<input  name="etime" id="etime" type="date"></li>
+                <li><input style="float: right" type="submit" value="查询"></li>
+            </form>
         </ul>
+    </div>
+    <div>
+        <div id="container" style="width: 1000px; height: 700px; margin: 0 auto"></div>
+        <script language="JavaScript">
+            var xAxis = [{{ jobsname|safe }}]
+            var data = [{{ jobscount|safe }}]
+            $(document).ready(function() {
+                var chart = {
+                    type: 'column'
+                };
+
+                var title = {
+                    text: '发版次数统计'
+                };
+
+                var subtitle = {
+                    text: 'Jenkins'
+                };
+
+                var yAxis = {
+                    min: 0,
+                    title: {
+                        text: '发版次数(次)'
+                    }
+                };
+
+                var tooltip = {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                };
+
+                var plotOptions = {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                };
+
+                var credits = {
+                    enabled: false
+                };
+
+                var json = {};
+                json.chart = chart;
+                json.title = title;
+                json.subtitle = subtitle;
+                json.tooltip = tooltip;
+                json.xAxis = xAxis;
+                json.yAxis = yAxis;
+                json.series = data;
+                json.plotOptions = plotOptions;
+                json.credits = credits;
+                $('#container').highcharts(json);
+            });
+        </script>
     </div>
 </div>
 </body>
